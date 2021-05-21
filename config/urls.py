@@ -14,8 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.apps import apps
+from django.conf.urls.static import static
 from django.urls import include, path
 from django.contrib import admin
+
+from config import settings
 
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
@@ -23,7 +26,10 @@ urlpatterns = [
     # The Django admin is not officially supported; expect breakage.
     # Nonetheless, it's often useful for debugging.
 
+    path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
     path('admin/', admin.site.urls),
 
     path('', include(apps.get_app_config('oscar').urls[0])),
 ]
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
